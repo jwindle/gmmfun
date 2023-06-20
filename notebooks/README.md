@@ -105,9 +105,11 @@ $$
 In other words, for the price of computing not $K$ derivatives, but the first $2K$ derivatives, we can compute the asymptotic variance for a given parameter $\theta$ directly.
 
 In our method of moments discussion above, that allows us to replac $\hat S(\theta)$ above with $S(\theta)$ where
+
 $$
-S_{ij}(\theta) = M^{(i+j)}(\theta) - M^{(i)}(\theta) M^{(j)},(\theta)
+S_{ij}(\theta) = M^{(i+j)}(\theta) - M^{(i)}(\theta) M^{(j)}(\theta)
 $$
+
 the exact asymptotic variance for a given value of $\theta$.
 
 
