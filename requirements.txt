@@ -2,7 +2,9 @@ pytest
 numpy
 pandas
 scipy
+typing_extensions
 jax
 jaxopt
 matplotlib
 jupyterlab
+build
