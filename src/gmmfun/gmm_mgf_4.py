@@ -1,3 +1,4 @@
+
 # Jesse Windle <jesse@bayesfactor.net>, 2023
 
 
@@ -10,8 +11,8 @@ from .utils import first_four_moments
 
 class GmmMgf4(GmmBase):
 
-    def __init__(self, mgf, bounds):
-        super().__init__(bounds, 4)
+    def __init__(self, mgf, bounds, x):
+        super().__init__(bounds, 4, x)
         self.mgf = mgf
         self.m1f = grad(self.mgf)
         self.m2f = grad(self.m1f)
@@ -21,8 +22,6 @@ class GmmMgf4(GmmBase):
         self.m2p = Partial(self.m2f, 0.0)
         self.m3p = Partial(self.m3f, 0.0)
         self.m4p = Partial(self.m4f, 0.0)
-
-    def set_other_data_for_loss(self, x):
         self.moments = first_four_moments(x)
 
     def loss_components(self, theta):

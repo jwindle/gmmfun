@@ -9,8 +9,8 @@ from .utils import first_four_moments
 
 class GmmCgf4(GmmBase):
 
-    def __init__(self, cgf, bounds):
-        super().__init__(bounds, 4)
+    def __init__(self, cgf, bounds, x):
+        super().__init__(bounds, 4, x)
         self.cgf = cgf
         self.c1f = grad(self.cgf)
         self.c2f = grad(self.c1f)
@@ -20,10 +20,9 @@ class GmmCgf4(GmmBase):
         self.c2p = Partial(self.c2f, 0.0)
         self.c3p = Partial(self.c3f, 0.0)
         self.c4p = Partial(self.c4f, 0.0)
-
-    def set_other_data_for_loss(self, x):
         self.moments = first_four_moments(x)
-        
+
+
     def loss_components(self, theta):
         x = self.moments
         k1 = self.c1p(theta)
