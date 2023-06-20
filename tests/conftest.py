@@ -3,7 +3,7 @@
 import pytest
 import numpy as np
 from scipy.stats import norm, gamma
-from gmmfun import GmmMgf4, GmmCgf4, GmmMgf
+from gmmfun import GmmMgf4, GmmCgf4, GmmMgf, GmmMgfCen, GmmMgfCenScl, GmmMgfStd, GmmMgfAvar
 from gmmfun.utils import mgf_norm, cgf_norm
 
 
@@ -33,45 +33,70 @@ def norm_init():
 
 @pytest.fixture(scope="module")
 def mgf_4(norm_init):
-    mod = GmmMgf4(norm_init['mgf'], norm_init['bounds'])
-    mod.set_data(norm_init['x'])
+    mod = GmmMgf4(norm_init['mgf'], norm_init['bounds'], norm_init['x'])
     return (mod, norm_init)
 
 
 @pytest.fixture(scope="module")
 def cgf_4(norm_init):
-    mod = GmmCgf4(norm_init['cgf'], norm_init['bounds'])
-    mod.set_data(norm_init['x'])
+    mod = GmmCgf4(norm_init['cgf'], norm_init['bounds'], norm_init['x'])
     return (mod, norm_init)
 
 
 @pytest.fixture(scope="module")
 def mgf(norm_init):
-    mod = GmmMgf(norm_init['mgf'], norm_init['bounds'], 4)
-    mod.set_data(norm_init['x'])
+    mod = GmmMgf(norm_init['mgf'], norm_init['bounds'], 4, norm_init['x'])
     return (mod, norm_init)
 
 
-@pytest.fixture(scope="function")
-def all_models_and_data(norm_init):
-    models = dict(
-        mgf_4 = GmmMgf4(norm_init['mgf'], norm_init['bounds']),
-        cgf_4 = GmmCgf4(norm_init['cgf'], norm_init['bounds']),
-        mgf = GmmMgf(norm_init['mgf'], norm_init['bounds'], 4)
-    )
-    for mod in models.values():
-        mod.set_data(norm_init['x'])
-    return (models, norm_init)
+@pytest.fixture(scope="module")
+def mgf_cen(norm_init):
+    mod = GmmMgfCen(norm_init['mgf'], norm_init['bounds'], 4, norm_init['x'])
+    return (mod, norm_init)
 
 
-@pytest.fixture(scope="module", params=["mgf_4", "cgf_4", "mgf"])
+@pytest.fixture(scope="module")
+def mgf_cen_scl(norm_init):
+    mod = GmmMgfCenScl(norm_init['mgf'], norm_init['bounds'], 4, norm_init['x'])
+    return (mod, norm_init)
+
+@pytest.fixture(scope="module")
+def mgf_std(norm_init):
+    mod = GmmMgfStd(norm_init['mgf'], norm_init['bounds'], 4, norm_init['x'])
+    return (mod, norm_init)
+
+
+@pytest.fixture(scope="module")
+def mgf_avar(norm_init):
+    mod = GmmMgfAvar(norm_init['mgf'], norm_init['bounds'], 4, norm_init['x'])
+    return (mod, norm_init)
+
+
+# @pytest.fixture(scope="function")
+# def all_models_and_data(norm_init):
+#     models = dict(
+#         mgf_4 = GmmMgf4(norm_init['mgf'], norm_init['bounds'], norm_init['x']),
+#         cgf_4 = GmmCgf4(norm_init['cgf'], norm_init['bounds'], norm_init['x']),
+#         mgf = GmmMgf(norm_init['mgf'], norm_init['bounds'], 4, norm_init['x']),
+#         mgf_cen = GmmMgfCen(norm_init['mgf'], norm_init['bounds'], 4, norm_init['x']),
+#         mgf_cen_scl = GmmMgfCenScl(norm_init['mgf'], norm_init['bounds'], 4, norm_init['x'])
+#         mgf_std = GmmMgfStd(norm_init['mgf'], norm_init['bounds'], 4, norm_init['x'])
+#     )
+#     return (models, norm_init)
+
+
+@pytest.fixture(scope="module", params=["mgf_4", "cgf_4", "mgf", "mgf_cen", "mgf_cen_scl", "mgf_avar"])
 def model_and_data(request):
     return request.getfixturevalue(request.param)
 
-    
-    
+
+# @pytest.fixture(scope="module", params=["mgf_4", "mgf", "mgf_cen", "mgf_cen_scl", "mgf_avar"])
+@pytest.fixture(scope="module", params=["mgf_avar"])
+def model_pair_and_data(request):
+    mod1, data = request.getfixturevalue(request.param)
+    mod0 = GmmCgf4(data['cgf'], data['bounds'], data['x'])
+    return (mod0, mod1, data)
 
 
 
 
-# @pytest.fixture(scope="module", params)
