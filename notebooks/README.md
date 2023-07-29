@@ -1,6 +1,6 @@
 # Intro
 
-In the `gmmfun` package we explore the generalized method of moments (GMM) using automatic differentiation (AD).  GMM is a likelihood-free way of estimating population parameters.  AD is kind of like symbolic differentiation; it is software that can create the gradient of an expression and evaluate it. 
+In the `gmmfun` package we explore the generalized method of moments (GMM) using automatic differentiation (AD).  GMM is a likelihood-free way of estimating population parameters.  AD is kind of like symbolic differentiation; it is software that can create the gradient of an expression and evaluate it. We employ [Jax](https://jax.readthedocs.io/en/latest/index.html) for automatic differentiation (AD).
 
 We will be using the moment generating function (MGF) and cumulant generating function below, so it is useful to briefly review those now.  The MGF is defined as
 
@@ -9,17 +9,6 @@ M(t) = \mathbb{E}[e^{t X}]
 $$
 
 and has the property $\mathbb{E}[X^k] = M^{(k)}(0)$ under certain regularity conditions.  The CGF is $K(t) = \log M(t)$, which has the nice property that $K'(0)$ is the mean and $K''(0)$ is the variance, i.e. the centered second moment, amongst other things.
-
-
-# Automatic differentiation
-
-We employ [Jax](https://jax.readthedocs.io/en/latest/index.html) for automatic differentiation (AD).  Below, we define the moment generating function and cumulant generating function of a normal distribution with mean and standard deviation $\theta = (\mu, \sigma)$.
-
-We can then compute the gradient of these functions using `grad`.  The `grad` function will take the gradient of the first argument by default, but it is possible to specifiy which argument you want to differentiate.
-
-We compute the first and second centered moment using the CGF and then evaluate those for a given $(\mu, \sigma)$ to confirm that this indeed is working as intended.
-
-
 
 # GMM for population parameter estimation
 
