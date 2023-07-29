@@ -1,14 +1,7 @@
 # Intro
 
-In the `gmmfun` package we explore the generalized method of moments (GMM) using automatic differentiation (AD).  GMM is a likelihood-free way of estimating population parameters.  AD is kind of like symbolic differentiation; it is software that can create the gradient of an expression and evaluate it. We employ [Jax](https://jax.readthedocs.io/en/latest/index.html) for automatic differentiation (AD).
+In the `gmmfun` package we explore the generalized method of moments (GMM) using automatic differentiation (AD).  GMM is a likelihood-free way of estimating population parameters.  AD is kind of like symbolic differentiation; it is software that can create the gradient of an expression and evaluate it. We employ [Jax](https://jax.readthedocs.io/en/latest/index.html) for automatic differentiation (AD).  After reading this introduction, I would suggest walking through our example [Jupyter Notebooks](https://github.com/jwindle/gmmfun/tree/main/notebooks) to see how it all works.
 
-We will be using the moment generating function (MGF) and cumulant generating function below, so it is useful to briefly review those now.  The MGF is defined as
-
-$$
-M(t) = \mathbb{E}[e^{t X}]
-$$
-
-and has the property $\mathbb{E}[X^k] = M^{(k)}(0)$ under certain regularity conditions.  The CGF is $K(t) = \log M(t)$, which has the nice property that $K'(0)$ is the mean and $K''(0)$ is the variance, i.e. the centered second moment, amongst other things.
 
 # GMM for population parameter estimation
 
@@ -28,7 +21,7 @@ $$
 \bar g_i(\theta) = \frac{1}{n} \sum_{t=1}^{n} g_i(x_t, \theta) = 0.
 $$
 
-Because we may have more moment conditions than parameters, we may not be able to solve this exactly using sampled data.  An obvious thing to do is to  minmize the squared error of these sample moment conditions.  
+Because we may have more moment conditions than parameters, we may not be able to solve this exactly using sampled data.  An obvious thing to do is to  minimize the squared error of these sample moment conditions.  
 
 Because it will be useful later, we actually want to think about minimizing the squared error using a symmetric, positive definite weighting matrix $W$.  That is, we want to minimize
 
@@ -71,7 +64,13 @@ $$
 
 # Moment conditions for estimating population parameters
 
-For our purposes here, we adopt the moment conditions
+We will be using the moment generating function (MGF) to define our moment conditions.  The MGF is defined as
+
+$$
+M(t) = \mathbb{E}[e^{t X}]
+$$
+
+and has the property $\mathbb{E}[X^k] = M^{(k)}(0)$ under certain regularity conditions.  Thus, the obvious moment conditions are:
 
 $$
 g_i(x, \theta) = x^i - M_\theta^{(i)}(0), i = 1, \ldots, K.
